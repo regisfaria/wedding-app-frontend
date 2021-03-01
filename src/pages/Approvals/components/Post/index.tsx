@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import 'react-day-picker/lib/style.css';
 import { FiCheck, FiX } from 'react-icons/fi';
 
 import api from '../../../../services/api';

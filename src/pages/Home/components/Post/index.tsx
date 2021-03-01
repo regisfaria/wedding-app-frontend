@@ -1,5 +1,4 @@
 import React, { useRef, useState, useCallback } from 'react';
-import 'react-day-picker/lib/style.css';
 import { FiSend } from 'react-icons/fi';
 import { AiFillLike, AiFillDislike } from 'react-icons/ai';
 import { FormHandles } from '@unform/core';
