@@ -5,6 +5,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { useHistory } from 'react-router-dom';
 import { useToast } from '../../hooks/toast';
+import loadingGif from '../../assets/loading.gif';
 
 import AppHeader from '../../components/AppHeader';
 import api from '../../services/api';
@@ -12,7 +13,13 @@ import api from '../../services/api';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, Content, AnimationContainer, Background } from './styles';
+import {
+  Container,
+  Content,
+  Loading,
+  AnimationContainer,
+  Background,
+} from './styles';
 
 interface NewPostFormData {
   image: File;
@@ -24,6 +31,7 @@ const NewPost: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const { addToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(new FormData());
   const history = useHistory();
 
@@ -38,6 +46,7 @@ const NewPost: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (data: NewPostFormData) => {
+      setIsLoading(true);
       try {
         formRef.current?.setErrors({});
 
@@ -62,6 +71,7 @@ const NewPost: React.FC = () => {
           title: 'Cant create the post',
           description: 'An error have ocurred, try again later.',
         });
+        setIsLoading(false);
       }
     },
     [addToast, history, formData],
@@ -72,29 +82,35 @@ const NewPost: React.FC = () => {
       <AppHeader />
       <Container>
         <Content>
-          <AnimationContainer>
-            <Form ref={formRef} onSubmit={handleSubmit}>
-              <h1>Create a new Post</h1>
+          {isLoading ? (
+            <Loading>
+              <img src={loadingGif} alt="loading" />
+            </Loading>
+          ) : (
+            <AnimationContainer>
+              <Form ref={formRef} onSubmit={handleSubmit}>
+                <h1>Create a new Post</h1>
 
-              <Input
-                name="image"
-                type="file"
-                icon={FiImage}
-                placeholder="Post image"
-                onChange={handleImageChange}
-              />
+                <Input
+                  name="image"
+                  type="file"
+                  icon={FiImage}
+                  placeholder="Post image"
+                  onChange={handleImageChange}
+                />
 
-              <Input name="title" icon={MdTitle} placeholder="Title" />
+                <Input name="title" icon={MdTitle} placeholder="Title" />
 
-              <Input
-                name="description"
-                icon={MdDescription}
-                placeholder="Description"
-              />
+                <Input
+                  name="description"
+                  icon={MdDescription}
+                  placeholder="Description"
+                />
 
-              <Button type="submit">Create</Button>
-            </Form>
-          </AnimationContainer>
+                <Button type="submit">Create</Button>
+              </Form>
+            </AnimationContainer>
+          )}
         </Content>
         <Background />
       </Container>

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import 'react-day-picker/lib/style.css';
-import { FiPlusCircle } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
 import AppHeader from '../../components/AppHeader';
+import loadingGif from '../../assets/loading.gif';
 
 import api from '../../services/api';
 import Post from './components/Post';
 
-import { Container, Content, PostFeed } from './styles';
+import { Container, Content, Loading, PostFeed } from './styles';
 
 interface AuthorData {
   imageUrl: string;
@@ -36,11 +34,12 @@ interface PostData {
 
 const Home: React.FC = () => {
   const [posts, setPosts] = useState<PostData[]>([]);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     api.get('/posts/1').then(response => {
       setPosts(response.data.data);
+      setIsLoading(false);
     });
   }, []);
 
@@ -49,12 +48,20 @@ const Home: React.FC = () => {
       <AppHeader />
 
       <Content>
-        {posts.length && (
-          <PostFeed>
-            {posts.map(post => (
-              <Post key={post._id.$oid} post={post} />
-            ))}
-          </PostFeed>
+        {isLoading ? (
+          <Loading>
+            <img src={loadingGif} alt="loading..." />
+          </Loading>
+        ) : (
+          <>
+            {posts.length && (
+              <PostFeed>
+                {posts.map(post => (
+                  <Post key={post._id.$oid} post={post} />
+                ))}
+              </PostFeed>
+            )}
+          </>
         )}
       </Content>
     </Container>

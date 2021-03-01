@@ -1,9 +1,10 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FiArrowLeft, FiUser, FiLock, FiFileText } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
+import loadingGif from '../../assets/loading.gif';
 
 import api from '../../services/api';
 
@@ -16,7 +17,13 @@ import logoImg from '../../assets/logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, Content, AnimatedContent, Background } from './styles';
+import {
+  Container,
+  Content,
+  Loading,
+  AnimatedContent,
+  Background,
+} from './styles';
 
 interface SignUpFormData {
   name: string;
@@ -28,9 +35,11 @@ const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = useCallback(
     async (data: SignUpFormData) => {
+      setIsLoading(true);
       try {
         formRef.current?.setErrors({});
 
@@ -88,40 +97,46 @@ const SignUp: React.FC = () => {
       <Background />
 
       <Content>
-        <AnimatedContent>
-          <img src={logoImg} alt="ALWedding" />
+        {isLoading ? (
+          <Loading>
+            <img src={loadingGif} alt="loading..." />
+          </Loading>
+        ) : (
+          <AnimatedContent>
+            <img src={logoImg} alt="ALWedding" />
 
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <h1>Account data</h1>
+            <Form ref={formRef} onSubmit={handleSubmit}>
+              <h1>Account data</h1>
 
-            <Input name="name" icon={FiUser} type="text" placeholder="Name" />
-            <Input
-              name="username"
-              icon={FiFileText}
-              type="text"
-              placeholder="Username"
-            />
-            <Input
-              name="password"
-              icon={FiLock}
-              type="password"
-              placeholder="Password"
-            />
-            <Input
-              name="confirmPassword"
-              icon={FiLock}
-              type="password"
-              placeholder="Confirm password"
-            />
+              <Input name="name" icon={FiUser} type="text" placeholder="Name" />
+              <Input
+                name="username"
+                icon={FiFileText}
+                type="text"
+                placeholder="Username"
+              />
+              <Input
+                name="password"
+                icon={FiLock}
+                type="password"
+                placeholder="Password"
+              />
+              <Input
+                name="confirmPassword"
+                icon={FiLock}
+                type="password"
+                placeholder="Confirm password"
+              />
 
-            <Button type="submit">SignUp</Button>
-          </Form>
+              <Button type="submit">SignUp</Button>
+            </Form>
 
-          <Link to="/">
-            <FiArrowLeft />
-            Return
-          </Link>
-        </AnimatedContent>
+            <Link to="/">
+              <FiArrowLeft />
+              Return
+            </Link>
+          </AnimatedContent>
+        )}
       </Content>
     </Container>
   );

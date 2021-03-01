@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import { FiUser, FiLock, FiLogIn } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -9,11 +9,18 @@ import { useToast } from '../../hooks/toast';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import logoImg from '../../assets/logo.png';
+import loadingGif from '../../assets/loading.gif';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, Content, AnimationContainer, Background } from './styles';
+import {
+  Container,
+  Content,
+  Loading,
+  AnimationContainer,
+  Background,
+} from './styles';
 
 interface SignInFormData {
   username: string;
@@ -27,8 +34,11 @@ const SignIn: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
+      setIsLoading(true);
       try {
         formRef.current?.setErrors({});
 
@@ -40,8 +50,6 @@ const SignIn: React.FC = () => {
         await schema.validate(data, {
           abortEarly: false,
         });
-
-        console.log('hey ya');
 
         await signIn({
           username: data.username,
@@ -72,29 +80,35 @@ const SignIn: React.FC = () => {
   return (
     <Container>
       <Content>
-        <AnimationContainer>
-          <img src={logoImg} alt="ALWedding" />
+        {isLoading ? (
+          <Loading>
+            <img src={loadingGif} alt="loading..." />
+          </Loading>
+        ) : (
+          <AnimationContainer>
+            <img src={logoImg} alt="ALWedding" />
 
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <h1>Login</h1>
+            <Form ref={formRef} onSubmit={handleSubmit}>
+              <h1>Login</h1>
 
-            <Input name="username" icon={FiUser} placeholder="Username" />
+              <Input name="username" icon={FiUser} placeholder="Username" />
 
-            <Input
-              name="password"
-              icon={FiLock}
-              type="password"
-              placeholder="Password"
-            />
+              <Input
+                name="password"
+                icon={FiLock}
+                type="password"
+                placeholder="Password"
+              />
 
-            <Button type="submit">SignIn</Button>
-          </Form>
+              <Button type="submit">SignIn</Button>
+            </Form>
 
-          <Link to="/signup">
-            <FiLogIn />
-            Create a new account
-          </Link>
-        </AnimationContainer>
+            <Link to="/signup">
+              <FiLogIn />
+              Create a new account
+            </Link>
+          </AnimationContainer>
+        )}
       </Content>
       <Background />
     </Container>

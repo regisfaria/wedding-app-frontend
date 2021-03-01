@@ -70,6 +70,10 @@ export const AnimationContainer = styled.div`
   }
 `;
 
+export const Loading = styled.div`
+  align-self: center;
+`;
+
 const fadeIn = keyframes`
   from {
     opacity: 0;

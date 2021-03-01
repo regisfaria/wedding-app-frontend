@@ -26,6 +26,10 @@ const appearFromLeft = keyframes`
   }
 `;
 
+export const Loading = styled.div`
+  align-self: center;
+`;
+
 export const AnimatedContent = styled.div`
   display: flex;
   flex-direction: column;

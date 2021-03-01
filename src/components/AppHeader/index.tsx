@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMenu, FiPower, FiX } from 'react-icons/fi';
-import { isUuid } from 'uuidv4';
 import {
   Container,
   Header,

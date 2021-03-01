@@ -19,6 +19,10 @@ export const Content = styled.div`
   justify-content: center;
 `;
 
+export const Loading = styled.div`
+  align-self: center;
+`;
+
 const appearFromRight = keyframes`
   from {
     opacity: 0;

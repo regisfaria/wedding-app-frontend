@@ -15,6 +15,10 @@ export const Content = styled.main`
   flex-direction: row;
 `;
 
+export const Loading = styled.div`
+  align-self: center;
+`;
+
 export const PostFeed = styled.div`
   display: block;
 
