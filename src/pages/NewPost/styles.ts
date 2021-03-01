@@ -1,7 +1,7 @@
 import { shade } from 'polished';
 import styled, { keyframes } from 'styled-components';
 
-import signInBackgroundImg from '../../assets/sign-in-background.jpg';
+import newPostBackground from '../../assets/new-post-background.jpg';
 
 export const Container = styled.div`
   height: 92vh;
@@ -85,7 +85,7 @@ const fadeIn = keyframes`
 
 export const Background = styled.div`
   flex: 1;
-  background: url(${signInBackgroundImg}) no-repeat center;
+  background: url(${newPostBackground}) no-repeat center;
   background-size: cover;
 
   animation: ${fadeIn} 2s;

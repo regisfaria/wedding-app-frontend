@@ -66,6 +66,8 @@ const SignIn: React.FC = () => {
           return;
         }
 
+        setIsLoading(false);
+
         addToast({
           type: 'error',
           title: 'Authentication error',

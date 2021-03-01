@@ -74,6 +74,7 @@ const SignUp: React.FC = () => {
         });
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
+          setIsLoading(false);
           const errors = getValidationErrors(error);
 
           formRef.current?.setErrors(errors);
